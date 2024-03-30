@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Design Your T-shirt</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .navbar {
+            margin-bottom: 20px;
+        }
+        .design-column {
+            border-right: 1px solid #000;
+        }
+        .tshirt-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+        .tshirt-image {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #000; /* Placeholder for the T-shirt outline */
+        }
+        .color-palette, .upload-area, .preview-area {
+            margin: 20px 0;
+        }
+        .tshirt-image {
+    max-width: 100%; /* Ensures image is responsive and doesn't overflow its container */
+    height: auto; /* Maintains the aspect ratio */
+}
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+            <a class="navbar-brand" href="#">T-shirt Designer</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active"><a class="nav-link" href="#">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Sign Up</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-md-4 design-column">
+                <div class="color-palette">
+                    <h5>Select Color of your T-shirt</h5>
+                    <div class="row">
+                        <div class="col color-swatch" style="height:50px; background-color: #ff0000;" data-color="red">r</div>
+                        <div class="col color-swatch" style="height:50px; background-color: #00ff00;" data-color="green">g</div>
+                        <div class="col color-swatch" style="height:50px; background-color: #0000ff;" data-color="blue">b</div>
+                        <!-- Add more color swatches as needed -->
+                    </div>
+                </div>
+                
+                
+                
+                <div class="upload-area">
+                    <h5>Insert Image in the T-shirt</h5>
+                    <input type="file" class="form-control-file">
+                </div>
+                <div class="preview-area">
+                    <h5>Preview Of the image and Drag and drop this image on the Tshirt.</h5>
+                    <!-- Image preview will be displayed here -->
+                </div>
+            </div>
+            <div class="col-md-8 tshirt-container">
+                <img src="TshirtSampleWhite.png" alt="T-shirt Template" class="tshirt-image" />
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var colorSwatches = document.querySelectorAll('.color-swatch');
+            var tshirtImage = document.querySelector('.tshirt-image');
+        
+            colorSwatches.forEach(function(swatch) {
+                swatch.addEventListener('click', function() {
+                    var color = this.getAttribute('data-color');
+                    switch (color) {
+                        case 'red':
+                            tshirtImage.style.filter = 'invert(15%) sepia(100%) saturate(7500%) hue-rotate(0deg) brightness(95%) contrast(105%)';
+                            break;
+                        case 'green':
+                            tshirtImage.style.filter = 'invert(50%) sepia(100%) saturate(7500%) hue-rotate(90deg) brightness(90%) contrast(105%)';
+                            break;
+                        case 'blue':
+                            tshirtImage.style.filter = 'invert(25%) sepia(95%) saturate(7500%) hue-rotate(203deg) brightness(90%) contrast(105%)';
+                            break;
+                        // Add more cases for additional colors
+                    }
+                });
+            });
+        });
+        </script>
+        
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
