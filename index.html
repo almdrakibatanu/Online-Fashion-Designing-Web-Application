@@ -1,48 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Design Your T-shirt</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body, html {
+        body,
+        html {
             height: 100%;
             margin: 0;
         }
+
         .navbar {
             margin-bottom: 20px;
         }
+
         .design-column {
             border-right: 1px solid #000;
         }
+
         .tshirt-container {
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100%;
         }
+
         .tshirt-image {
             max-width: 100%;
             height: auto;
-            border: 1px solid #000; /* Placeholder for the T-shirt outline */
+            border: 1px solid #000;
+            /* Placeholder for the T-shirt outline */
         }
-        .color-palette, .upload-area, .preview-area {
+
+        .color-palette,
+        .upload-area,
+        .preview-area {
             margin: 20px 0;
         }
-        .tshirt-image {
-    max-width: 100%; /* Ensures image is responsive and doesn't overflow its container */
-    height: auto; /* Maintains the aspect ratio */
-}
 
+        .tshirt-image {
+            max-width: 100%;
+            /* Ensures image is responsive and doesn't overflow its container */
+            height: auto;
+            /* Maintains the aspect ratio */
+        }
+
+        .preview-area {
+            width: 300px;
+            height: 300px;
+            border: 1px dashed #ccc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            /* Ensure that the image doesn't spill over the div size */
+        }
+
+        .preview-area img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            /* This will ensure that the aspect ratio is maintained and the image is contained within the div */
+        }
+
+        .tshirt-preview {
+            position: relative;
+            display: inline-block;
+            width: 250px;
+            /* Adjust to fit your T-shirt image size */
+            height: 400px;
+            /* Adjust to fit your T-shirt image size */
+            background-size: cover;
+            background-position: center;
+        }
+
+        .tshirt-image,
+        .overlay-image {
+            position: absolute;
+            /* top: 0;
+            left: 0; */
+            right: 0;
+            bottom: 0; 
+            max-width: 100%;
+            max-height: 100%;
+        }
+
+        .tshirt-preview.over {
+            border-color: #000;
+            /* Change color when an item is dragged over */
+        }
     </style>
 </head>
+
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
             <a class="navbar-brand" href="#">T-shirt Designer</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -62,38 +121,87 @@
                 <div class="color-palette">
                     <h5>Select Color of your T-shirt</h5>
                     <div class="row">
-                        <div class="col color-swatch" style="height:50px; background-color: #ff0000;" data-color="red">r</div>
-                        <div class="col color-swatch" style="height:50px; background-color: #00ff00;" data-color="green">g</div>
-                        <div class="col color-swatch" style="height:50px; background-color: #0000ff;" data-color="blue">b</div>
+                        <div class="col color-swatch" style="height:50px; background-color: #ff0000;" data-color="red">r
+                        </div>
+                        <div class="col color-swatch" style="height:50px; background-color: #00ff00;"
+                            data-color="green">g</div>
+                        <div class="col color-swatch" style="height:50px; background-color: #0000ff;" data-color="blue">
+                            b</div>
                         <!-- Add more color swatches as needed -->
                     </div>
                 </div>
-                
-                
-                
+
+
+
                 <div class="upload-area">
                     <h5>Insert Image in the T-shirt</h5>
                     <input type="file" class="form-control-file">
                 </div>
-                <div class="preview-area">
+                <div class="preview-area" id="preview">
                     <h5>Preview Of the image and Drag and drop this image on the Tshirt.</h5>
                     <!-- Image preview will be displayed here -->
                 </div>
             </div>
+            <!-- <div class="col-md-8 tshirt-container">
+                <img src="TshirtSampleWhite.png" alt="T-shirt Template" class="tshirt-image tshirt-preview" 
+                id="tshirtFront" ondrop="drop(event)" ondragover="allowDrop(event)"/>
+            </div> -->
+            <!-- ...other HTML... -->
+
             <div class="col-md-8 tshirt-container">
-                <img src="TshirtSampleWhite.png" alt="T-shirt Template" class="tshirt-image" />
+                <!-- Changed to a div container to hold both the T-shirt and the overlay image -->
+                <div class="tshirt-preview" id="tshirtFront" ondrop="drop(event)" ondragover="allowDrop(event)">
+                    <img src="TshirtSampleWhite.png" alt="T-shirt Template" class="tshirt-image" />
+                    <!-- The dropped image will be added here -->
+                </div>
             </div>
-            
+            <!-- ...other HTML... -->
+
+
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        // Function to allow dragging over the T-shirt area
+        function allowDrop(event) {
+            event.preventDefault();
+            event.target.classList.add('over'); // Add a class for visual feedback
+        }
+
+        // Function to handle the actual drop
+        // ...other JavaScript...
+        function drop(event) {
+            event.preventDefault();
+            const data = event.dataTransfer.getData("text/plain");
+            const draggedElement = document.getElementById(data);
+            const tshirtPreview = document.getElementById('tshirtFront');
+
+            // Create a new image element for the overlay
+            const overlayImage = new Image();
+            overlayImage.src = draggedElement.src;
+            overlayImage.className = 'overlay-image';
+
+            // Calculate the center position
+            const tshirtRect = tshirtPreview.getBoundingClientRect();
+            // overlayImage.style.position = 'absolute';
+            overlayImage.style.left = (tshirtRect.width / 2 - draggedElement.width / 2 + 40) + 'px';
+            // overlayImage.style.top = (tshirtRect.height / 2 - draggedElement.height / 2) + 'px';
+
+            // Make sure the previous overlays are cleared if necessary
+            tshirtPreview.innerHTML = '<img src="TshirtSampleWhite.png" alt="T-shirt Template" class="tshirt-image" />';
+
+            // Append the overlay image to the T-shirt container
+            tshirtPreview.appendChild(overlayImage);
+        }
+
+
+
+        document.addEventListener('DOMContentLoaded', function () {
             var colorSwatches = document.querySelectorAll('.color-swatch');
             var tshirtImage = document.querySelector('.tshirt-image');
-        
-            colorSwatches.forEach(function(swatch) {
-                swatch.addEventListener('click', function() {
+
+            colorSwatches.forEach(function (swatch) {
+                swatch.addEventListener('click', function () {
                     var color = this.getAttribute('data-color');
                     switch (color) {
                         case 'red':
@@ -109,12 +217,60 @@
                     }
                 });
             });
+
+            // Grabbing the file input and preview div elements
+            var fileInput = document.querySelector('input[type="file"]');
+            var previewArea = document.getElementById('preview');
+
+            fileInput.addEventListener('change', function (event) {
+                var files = event.target.files;
+                var file = files[0];
+
+                // Ensure a file is selected and it's an image
+                if (file && file.type.startsWith('image/')) {
+                    // FileReader to read the file and convert it to a data URL
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                        // Create an image element and set its source to the data URL
+                        var img = new Image();
+                        img.src = e.target.result;
+
+                        img.id = 'draggedImage'; // Assign an ID for the dataTransfer
+                        img.draggable = true;
+                        img.ondragstart = function (event) {
+                            event.dataTransfer.setData("text/plain", img.id); // Set the id of the image
+                        };
+                        // Clear the preview area and append the new image
+                        previewArea.innerHTML = '';
+                        previewArea.appendChild(img);
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    previewArea.innerHTML = 'Please select an image file.';
+                }
+            });
+
+            // Attach the dragover and drop listeners to the T-shirt container
+            const tshirtFront = document.getElementById('tshirtFront');
+            tshirtFront.ondragover = allowDrop;
+            tshirtFront.ondrop = drop;
+
+            // previewArea.addEventListener('change', function (event) {
+            //     var previewImage = event.target; // Assuming this is your image
+            //     previewImage.id = 'draggedImage'; // Assign an ID for the dataTransfer
+            //     previewImage.draggable = true;
+            //     previewImage.ondragstart = function (event) {
+            //         event.dataTransfer.setData("text", event.target.id);
+            //     };
+            // });
+
         });
-        </script>
-        
+    </script>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
+
 </html>
